@@ -1,6 +1,7 @@
-#include "FlowScheduler.h"
-#include "FlowTask.h"
-#include "FlowTracer.h"
+#include "FlowLock/Scheduler/FlowScheduler.h"
+#include "FlowLock/Scheduler/FlowTask.h"
+#include "FlowLock/Utils/FlowTracer.h"
+#include <iostream>
 
 namespace adapter {
 
@@ -22,6 +23,7 @@ namespace adapter {
         {
             std::lock_guard<std::mutex> lock(queueMutex);
             taskQueue.push(task);
+            std::cerr << "Task enqueued successfully - queue size: " << taskQueue.size() << std::endl;
         }
 
         condVar.notify_one();
@@ -29,8 +31,13 @@ namespace adapter {
 
     std::shared_ptr<FlowTask> FlowScheduler::dequeueTask() {
         std::unique_lock<std::mutex> lock(queueMutex);
-
-        if (taskQueue.empty()) {
+        
+        bool taskAvailable = condVar.wait_for(lock, std::chrono::milliseconds(10), 
+            [this] { return !taskQueue.empty() || stopping; });
+        
+        if (stopping) return nullptr;
+        
+        if (!taskAvailable || taskQueue.empty()) {
             static std::atomic<uint64_t> emptyCount{ 0 };
             uint64_t currentEmptyCount = ++emptyCount;
 
@@ -49,6 +56,7 @@ namespace adapter {
 
         auto task = taskQueue.top();
         taskQueue.pop();
+        std::cerr << "Task dequeued - remaining queue size: " << taskQueue.size() << std::endl;
         return task;
     }
 

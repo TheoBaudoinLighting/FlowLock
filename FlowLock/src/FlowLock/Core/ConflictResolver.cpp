@@ -1,6 +1,6 @@
-#include "ConflictResolver.h"
-#include "FlowTask.h"
-#include "FlowTracer.h"
+#include "FlowLock/Core/ConflictResolver.h"
+#include "FlowLock/Scheduler/FlowTask.h"
+#include "FlowLock/Utils/FlowTracer.h"
 #include <algorithm>
 #include <sstream>
 #include <iostream> 

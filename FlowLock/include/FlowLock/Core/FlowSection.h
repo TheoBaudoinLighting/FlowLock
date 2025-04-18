@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FlowLock.h"
+#include "FlowLock/FlowLockImpl.h"
 #include <string>
 #include <vector>
 #include <future>
@@ -20,7 +20,7 @@ namespace adapter {
 
         template<typename F>
         auto operator<<(F&& func) {
-            return FlowLock::instance().request(std::forward<F>(func), priority, allTags);
+            return FlowLockImpl::instance().request(std::forward<F>(func), priority, allTags);
         }
 
     private:

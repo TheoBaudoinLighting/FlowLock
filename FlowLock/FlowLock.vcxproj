@@ -139,26 +139,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\ConflictResolver.h" />
-    <ClInclude Include="include\FlowContext.h" />
-    <ClInclude Include="include\FlowExecution.h" />
-    <ClInclude Include="include\FlowLock.h" />
-    <ClInclude Include="include\FlowScheduler.h" />
-    <ClInclude Include="include\FlowSection.h" />
-    <ClInclude Include="include\FlowTask.h" />
-    <ClInclude Include="include\FlowTracer.h" />
-    <ClInclude Include="include\ThreadPool.h" />
+    <ClInclude Include="include\FlowLock\Core\FlowBuilder.h" />
+    <ClInclude Include="include\FlowLock\Core\FlowContext.h" />
+    <ClInclude Include="include\FlowLock\Core\FlowProfiler.h" />
+    <ClInclude Include="include\FlowLock\Context\FlowContext.h" />
+    <ClInclude Include="include\FlowLock\Core\ConflictResolver.h" />
+    <ClInclude Include="include\FlowLock\FlowLock.h" />
+    <ClInclude Include="include\FlowLock\Core\FlowSection.h" />
+    <ClInclude Include="include\FlowLock\Execution\FlowExecution.h" />
+    <ClInclude Include="include\FlowLock\FlowLockImpl.h" />
+    <ClInclude Include="include\FlowLock\Scheduler\FlowScheduler.h" />
+    <ClInclude Include="include\FlowLock\Scheduler\FlowTask.h" />
+    <ClInclude Include="include\FlowLock\Utils\FlowTracer.h" />
+    <ClInclude Include="include\FlowLock\Utils\ThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ConflictResolver.cpp" />
-    <ClCompile Include="src\FlowContext.cpp" />
-    <ClCompile Include="src\FlowExecution.cpp" />
-    <ClCompile Include="src\FlowLock.cpp" />
-    <ClCompile Include="src\FlowScheduler.cpp" />
-    <ClCompile Include="src\FlowSection.cpp" />
-    <ClCompile Include="src\FlowTask.cpp" />
-    <ClCompile Include="src\FlowTracer.cpp" />
-    <ClCompile Include="src\ThreadPool.cpp" />
+    <ClCompile Include="src\FlowLock\Context\FlowContext.cpp" />
+    <ClCompile Include="src\FlowLock\Core\ConflictResolver.cpp" />
+    <ClCompile Include="src\FlowLock\Core\FlowBuilder.cpp" />
+    <ClCompile Include="src\FlowLock\Core\FlowProfiler.cpp" />
+    <ClCompile Include="src\FlowLock\Core\FlowSection.cpp" />
+    <ClCompile Include="src\FlowLock\Execution\FlowExecution.cpp" />
+    <ClCompile Include="src\FlowLock\FlowLock.cpp" />
+    <ClCompile Include="src\FlowLock\FlowLockImpl.cpp" />
+    <ClCompile Include="src\FlowLock\Scheduler\FlowScheduler.cpp" />
+    <ClCompile Include="src\FlowLock\Scheduler\FlowTask.cpp" />
+    <ClCompile Include="src\FlowLock\Utils\FlowTracer.cpp" />
+    <ClCompile Include="src\FlowLock\Utils\ThreadPool.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
