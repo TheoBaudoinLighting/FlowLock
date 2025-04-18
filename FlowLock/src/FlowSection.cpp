@@ -1,7 +1,7 @@
 #include "FlowSection.h"
 #include "FlowTracer.h"
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     FlowSection::FlowSection(const std::string& name, uint32_t priority,
         const std::vector<std::string>& tags)
@@ -30,4 +30,4 @@ namespace Volvic::Ticking {
         );
     }
 
-} // namespace Volvic::Ticking
+} // namespace adapter

@@ -8,7 +8,8 @@
 #include <vector>
 #include <functional>
 
-namespace Volvic::Ticking {
+namespace adapter {
+    
     class FlowTracer;
     class FlowTask;
 
@@ -42,4 +43,4 @@ namespace Volvic::Ticking {
         std::atomic<bool> stopping{ false };
     };
 
-} // namespace Volvic::Ticking
+} // namespace adapter

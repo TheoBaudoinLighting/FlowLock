@@ -1,6 +1,6 @@
 #include "pch.h"
 
-namespace Volvic::Ticking::Tests {
+namespace adapter::Tests {
 
     class FlowTaskTest : public ::testing::Test {
     protected:
@@ -42,8 +42,8 @@ namespace Volvic::Ticking::Tests {
         EXPECT_TRUE(task.hasTag("physics"));
         EXPECT_EQ(task.getTags().size(), 2);
 
-        task.addTag("render");  // Add duplicate tag
-        EXPECT_EQ(task.getTags().size(), 2);  // Size should not change
+        task.addTag("render"); 
+        EXPECT_EQ(task.getTags().size(), 2); 
     }
 
     TEST_F(FlowTaskTest, ExecutesWithContext) {
@@ -64,4 +64,4 @@ namespace Volvic::Ticking::Tests {
         EXPECT_EQ(capturedLogicalTick, 123);
     }
 
-}  // namespace Volvic::Ticking::Tests
+}  // namespace adapter::Tests

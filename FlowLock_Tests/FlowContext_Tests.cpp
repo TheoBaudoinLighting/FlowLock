@@ -1,6 +1,6 @@
 #include "pch.h"
 
-namespace Volvic::Ticking::Tests {
+namespace adapter::Tests {
 
     class FlowContextTest : public ::testing::Test {
     protected:
@@ -60,11 +60,10 @@ namespace Volvic::Ticking::Tests {
         auto expectedDuration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
         auto actualDuration = profileData->duration();
 
-        // Give a margin of error since timing can be imprecise
         auto marginOfError = std::chrono::milliseconds(20);
 
         EXPECT_LE(actualDuration, expectedDuration + marginOfError);
         EXPECT_GE(actualDuration, expectedDuration - marginOfError);
     }
 
-}  // namespace Volvic::Ticking::Tests
+}  // namespace adapter::Tests

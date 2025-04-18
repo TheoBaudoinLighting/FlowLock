@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     class FlowTask;
 
@@ -36,4 +36,4 @@ namespace Volvic::Ticking {
             const std::vector<std::shared_ptr<FlowTask>>& runningTasks) const;
     };
 
-} // namespace Volvic::Ticking
+} // namespace adapter

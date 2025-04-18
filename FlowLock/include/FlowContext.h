@@ -5,7 +5,7 @@
 #include <string>
 #include <chrono>
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     class FlowContext {
     public:
@@ -34,4 +34,4 @@ namespace Volvic::Ticking {
         std::optional<ProfileData> currentProfile;
     };
 
-} // namespace Volvic::Ticking
+} // namespace adapter

@@ -9,8 +9,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FlowLock_App", "FlowLock_Ap
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FlowLock_Tests", "FlowLock_Tests\FlowLock_Tests.vcxproj", "{768E03DA-133F-4DA9-B46D-A23702A36EE2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Threadpool", "Threadpool\Threadpool.vcxproj", "{4EBD7EF2-E357-474B-9CA1-434D67560837}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Threadpool_Tests", "Threadpool_Tests\Threadpool_Tests.vcxproj", "{446CBD86-0EB4-4162-898D-0FEBCD0C420A}"
 EndProject
 Global
@@ -45,14 +43,6 @@ Global
 		{768E03DA-133F-4DA9-B46D-A23702A36EE2}.Release|x64.Build.0 = Release|x64
 		{768E03DA-133F-4DA9-B46D-A23702A36EE2}.Release|x86.ActiveCfg = Release|Win32
 		{768E03DA-133F-4DA9-B46D-A23702A36EE2}.Release|x86.Build.0 = Release|Win32
-		{4EBD7EF2-E357-474B-9CA1-434D67560837}.Debug|x64.ActiveCfg = Debug|x64
-		{4EBD7EF2-E357-474B-9CA1-434D67560837}.Debug|x64.Build.0 = Debug|x64
-		{4EBD7EF2-E357-474B-9CA1-434D67560837}.Debug|x86.ActiveCfg = Debug|Win32
-		{4EBD7EF2-E357-474B-9CA1-434D67560837}.Debug|x86.Build.0 = Debug|Win32
-		{4EBD7EF2-E357-474B-9CA1-434D67560837}.Release|x64.ActiveCfg = Release|x64
-		{4EBD7EF2-E357-474B-9CA1-434D67560837}.Release|x64.Build.0 = Release|x64
-		{4EBD7EF2-E357-474B-9CA1-434D67560837}.Release|x86.ActiveCfg = Release|Win32
-		{4EBD7EF2-E357-474B-9CA1-434D67560837}.Release|x86.Build.0 = Release|Win32
 		{446CBD86-0EB4-4162-898D-0FEBCD0C420A}.Debug|x64.ActiveCfg = Debug|x64
 		{446CBD86-0EB4-4162-898D-0FEBCD0C420A}.Debug|x64.Build.0 = Debug|x64
 		{446CBD86-0EB4-4162-898D-0FEBCD0C420A}.Debug|x86.ActiveCfg = Debug|Win32

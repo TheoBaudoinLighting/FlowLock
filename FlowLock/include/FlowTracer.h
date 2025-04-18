@@ -7,7 +7,7 @@
 #include <chrono>
 #include <optional>
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     class FlowTask;
     class FlowContext;
@@ -70,4 +70,4 @@ namespace Volvic::Ticking {
         static std::atomic<uint32_t> nextTaskId;
     };
 
-} // namespace Volvic::Ticking
+} // namespace adapter

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-namespace Volvic::Ticking::Tests {
+namespace adapter::Tests {
 
     class FlowTracerTest : public ::testing::Test {
     protected:
@@ -66,9 +66,9 @@ namespace Volvic::Ticking::Tests {
         tracer.addEvent(
             TraceEvent::Type::TASK_STARTED,
             "Full event",
-            42,    // taskId
-            123,   // threadId
-            { "render", "physics" }  // tags
+            42,
+            123,
+            { "render", "physics" }
         );
 
         const auto& events = tracer.getEvents();
@@ -155,22 +155,18 @@ namespace Volvic::Ticking::Tests {
     TEST_F(FlowTracerTest, MaxEventsLimitWorks) {
         auto& tracer = FlowTracer::instance();
 
-        // Set max to 5 events
         tracer.setMaxEvents(5);
 
-        // Add 10 events
         for (int i = 0; i < 10; i++) {
             tracer.addEvent(TraceEvent::Type::TASK_QUEUED, "Event " + std::to_string(i));
         }
 
-        // Should only keep the 5 most recent events
         const auto& events = tracer.getEvents();
         EXPECT_EQ(events.size(), 5);
 
-        // The events should be 5-9
         for (int i = 0; i < 5; i++) {
             EXPECT_EQ(events[i].description, "Event " + std::to_string(i + 5));
         }
     }
 
-}  // namespace Volvic::Ticking::Tests
+}  // namespace adapter::Tests

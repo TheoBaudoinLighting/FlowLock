@@ -1,16 +1,14 @@
 #include "pch.h"
 
-namespace Volvic::Ticking::Tests {
+namespace adapter::Tests {
 
     class FlowSchedulerTest : public ::testing::Test {
     protected:
         void SetUp() override {
-            // Disable FlowTracer during tests to avoid side effects
             FlowTracer::instance().setEnabled(false);
         }
 
         void TearDown() override {
-            // Re-enable FlowTracer after tests
             FlowTracer::instance().setEnabled(true);
         }
     };
@@ -48,7 +46,6 @@ namespace Volvic::Ticking::Tests {
 
         EXPECT_EQ(scheduler.getQueueSize(), 2);
 
-        // Higher priority task should be dequeued first
         auto firstTask = scheduler.dequeueTask();
         EXPECT_EQ(firstTask, highPriorityTask);
 
@@ -69,7 +66,6 @@ namespace Volvic::Ticking::Tests {
         scheduler.enqueueTask(task1);
         scheduler.enqueueTask(task2);
 
-        // Same priority, earlier timestamp should be dequeued first
         auto firstTask = scheduler.dequeueTask();
         EXPECT_EQ(firstTask, task1);
 
@@ -85,4 +81,4 @@ namespace Volvic::Ticking::Tests {
         EXPECT_EQ(task, nullptr);
     }
 
-}  // namespace Volvic::Ticking::Tests
+}  // namespace adapter::Tests

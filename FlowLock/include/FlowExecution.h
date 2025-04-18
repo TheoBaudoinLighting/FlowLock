@@ -6,7 +6,7 @@
 #include <mutex>
 #include <atomic>
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     class FlowTask;
     class FlowContext;
@@ -35,4 +35,4 @@ namespace Volvic::Ticking {
         void notifyTaskCompleted(const std::shared_ptr<FlowTask>& task);
     };
 
-} // namespace Volvic::Ticking
+} // namespace adapter

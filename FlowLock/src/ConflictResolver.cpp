@@ -5,7 +5,7 @@
 #include <sstream>
 #include <iostream> 
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     ConflictResolver::ConflictResolver()
         : defaultPolicy(Policy::SHARED) {
@@ -124,4 +124,4 @@ namespace Volvic::Ticking {
         return true;
     }
 
-} // namespace Volvic::Ticking
+} // namespace adapter

@@ -2,7 +2,7 @@
 #include "FlowContext.h"
 #include <algorithm>
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     FlowTask::FlowTask(TaskFunction function, uint32_t priority,
         std::chrono::steady_clock::time_point timestamp)
@@ -37,4 +37,4 @@ namespace Volvic::Ticking {
         }
     }
 
-} // namespace Volvic::Ticking
+} // namespace adapter

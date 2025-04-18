@@ -7,7 +7,7 @@
 #include <thread>
 #include <exception>
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     FlowExecution::FlowExecution(FlowScheduler& scheduler)
         : scheduler(scheduler) {
@@ -94,4 +94,4 @@ namespace Volvic::Ticking {
         }
     }
 
-} // namespace Volvic::Ticking
+} // namespace adapter

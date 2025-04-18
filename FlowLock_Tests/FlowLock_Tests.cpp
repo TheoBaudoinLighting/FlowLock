@@ -1,24 +1,20 @@
 #include "pch.h"
 
-namespace Volvic::Ticking::Tests {
+namespace adapter::Tests {
 
     class FlowSectionTest : public ::testing::Test {
     protected:
         void SetUp() override {
-            // Disable FlowTracer during tests to avoid side effects
             FlowTracer::instance().setEnabled(false);
         }
 
         void TearDown() override {
-            // Re-enable FlowTracer after tests
             FlowTracer::instance().setEnabled(true);
         }
     };
 
     TEST_F(FlowSectionTest, CreateSectionWithNameAndPriority) {
         FlowSection section("render", 99);
-
-        // No explicit assertions, but should not crash
     }
 
     TEST_F(FlowSectionTest, QueueTasksWithOperator) {
@@ -31,10 +27,8 @@ namespace Volvic::Ticking::Tests {
                 return 42;
                 };
 
-            // Force direct execution instead of async
             FlowLock::instance().run();
 
-            // Explicitly wait for future
             try {
                 EXPECT_EQ(future.get(), 42);
                 EXPECT_TRUE(executed);
@@ -52,7 +46,6 @@ namespace Volvic::Ticking::Tests {
         {
             FlowSection section("render", 99, { "graphics" });
             auto future = section << [&capturedTags](FlowContext& ctx) {
-                // We need to capture the task tags indirectly
                 FlowLock::instance().setTaskCompletionCallback([&capturedTags](const std::shared_ptr<FlowTask>& task) {
                     capturedTags = task->getTags();
                     });
@@ -62,7 +55,6 @@ namespace Volvic::Ticking::Tests {
             future.get();
         }
 
-        // Tags should include both the original tag and the section name tag
         EXPECT_EQ(capturedTags.size(), 2);
         EXPECT_TRUE(std::find(capturedTags.begin(), capturedTags.end(), "graphics") != capturedTags.end());
         EXPECT_TRUE(std::find(capturedTags.begin(), capturedTags.end(), "section:render") != capturedTags.end());
@@ -81,10 +73,8 @@ namespace Volvic::Ticking::Tests {
                     });
             }
 
-            // Force execution and explicitly wait for tasks
             FlowLock::instance().run();
 
-            // Explicitly wait for all futures
             for (auto& future : futures) {
                 try {
                     future.get();
@@ -99,4 +89,4 @@ namespace Volvic::Ticking::Tests {
         EXPECT_EQ(counter, 5);
     }
 
-}  // namespace Volvic::Ticking::Tests
+}  // namespace adapter::Tests

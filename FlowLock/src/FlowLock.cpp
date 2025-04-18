@@ -9,7 +9,7 @@
 #include <chrono>
 #include <iostream>
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     FlowLock& FlowLock::instance() {
         static FlowLock instance;
@@ -129,4 +129,4 @@ namespace Volvic::Ticking {
         userCompletionCallback = callback;
     }
 
-} // namespace Volvic::Ticking
+} // namespace adapter

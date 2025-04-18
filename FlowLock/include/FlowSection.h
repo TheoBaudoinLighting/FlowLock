@@ -5,7 +5,7 @@
 #include <vector>
 #include <future>
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     class FlowSection {
     public:
@@ -29,4 +29,4 @@ namespace Volvic::Ticking {
         std::vector<std::string> allTags;
     };
 
-} // namespace Volvic::Ticking
+} // namespace adapter

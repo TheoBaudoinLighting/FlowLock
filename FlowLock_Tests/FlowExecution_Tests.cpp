@@ -1,6 +1,6 @@
 #include "pch.h"
 
-namespace Volvic::Ticking::Tests {
+namespace adapter::Tests {
 
     class MockScheduler : public FlowScheduler {
     public:
@@ -10,14 +10,12 @@ namespace Volvic::Ticking::Tests {
     class FlowExecutionTest : public ::testing::Test {
     protected:
         void SetUp() override {
-            // Disable FlowTracer during tests to avoid side effects
             FlowTracer::instance().setEnabled(false);
             mockScheduler = std::make_unique<MockScheduler>();
             execution = std::make_unique<FlowExecution>(*mockScheduler);
         }
 
         void TearDown() override {
-            // Re-enable FlowTracer after tests
             FlowTracer::instance().setEnabled(true);
             execution.reset();
             mockScheduler.reset();
@@ -47,24 +45,19 @@ namespace Volvic::Ticking::Tests {
             }
             });
 
-        // Execute in another thread
         std::thread executor([this, longRunningTask]() {
             execution->executeTask(longRunningTask);
             });
 
-        // Give it time to start
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
-        // Check running tasks
         auto runningTasks = execution->getRunningTasks();
         EXPECT_EQ(runningTasks.size(), 1);
         EXPECT_EQ(runningTasks[0], longRunningTask);
 
-        // Signal task to complete
         keepRunning = false;
         executor.join();
 
-        // Check running tasks are empty
         runningTasks = execution->getRunningTasks();
         EXPECT_TRUE(runningTasks.empty());
     }
@@ -97,15 +90,11 @@ namespace Volvic::Ticking::Tests {
             throw std::runtime_error("Test exception");
             });
 
-        // Nous nous attendons maintenant à ce que l'exécution gère l'exception en interne
-        // et ne la propage pas, mais qu'elle nettoie quand même correctement
         execution->executeTask(throwingTask);
 
-        // Le callback doit quand même être appelé
         EXPECT_TRUE(callbackCalled);
 
-        // La tâche ne doit pas rester dans la liste des tâches en cours
         EXPECT_TRUE(execution->getRunningTasks().empty());
     }
 
-}  // namespace Volvic::Ticking::Tests
+}  // namespace adapter::Tests

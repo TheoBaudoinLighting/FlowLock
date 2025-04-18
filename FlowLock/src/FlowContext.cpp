@@ -1,6 +1,6 @@
 #include "FlowContext.h"
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     FlowContext::FlowContext(uint32_t threadId, uint64_t logicalTick, bool enableProfiling)
         : threadId(threadId), logicalTick(logicalTick), profilingEnabled(enableProfiling) {
@@ -41,4 +41,4 @@ namespace Volvic::Ticking {
         return endTime - startTime;
     }
 
-} // namespace Volvic::Ticking
+} // namespace adapter

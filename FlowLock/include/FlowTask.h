@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     class FlowContext;
 
@@ -33,4 +33,4 @@ namespace Volvic::Ticking {
         std::vector<std::string> tags;
     };
 
-} // namespace Volvic::Ticking
+} // namespace adapter

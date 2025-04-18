@@ -11,7 +11,7 @@
 #include "FlowTask.h"
 #include "ThreadPool.h"
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     class FlowExecution;
     class ConflictResolver;
@@ -83,4 +83,4 @@ namespace Volvic::Ticking {
         return result;
     }
 
-} // namespace Volvic::Ticking
+} // namespace adapter

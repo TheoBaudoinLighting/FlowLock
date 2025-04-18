@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     std::atomic<uint32_t> FlowTracer::nextTaskId{ 0 };
 
@@ -169,4 +169,4 @@ namespace Volvic::Ticking {
         enabled = enable;
     }
 
-} // namespace Volvic::Ticking
+} // namespace adapter

@@ -1,16 +1,14 @@
 #include "pch.h"
 
-namespace Volvic::Ticking::Tests {
+namespace adapter::Tests {
 
     class ConflictResolverTest : public ::testing::Test {
     protected:
         void SetUp() override {
-            // Disable FlowTracer during tests to avoid side effects
             FlowTracer::instance().setEnabled(false);
         }
 
         void TearDown() override {
-            // Re-enable FlowTracer after tests
             FlowTracer::instance().setEnabled(true);
         }
 
@@ -63,7 +61,6 @@ namespace Volvic::Ticking::Tests {
 
         EXPECT_FALSE(resolver.canExecute(task, runningTasks));
 
-        // No conflict with different tags
         auto differentTask = createTask({ "physics" });
         EXPECT_TRUE(resolver.canExecute(differentTask, runningTasks));
     }
@@ -91,13 +88,10 @@ namespace Volvic::Ticking::Tests {
 
         std::vector<std::shared_ptr<FlowTask>> runningTasks{ lowPriorityRunning };
 
-        // Higher priority can execute
         EXPECT_TRUE(resolver.canExecute(highPriorityTask, runningTasks));
 
-        // Same priority cannot execute
         EXPECT_FALSE(resolver.canExecute(samePriorityTask, runningTasks));
 
-        // Lower priority cannot execute
         EXPECT_FALSE(resolver.canExecute(lowerPriorityTask, runningTasks));
     }
 
@@ -108,28 +102,22 @@ namespace Volvic::Ticking::Tests {
 
         auto task = createTask({ "render", "physics" });
 
-        // Test avec un conflit sur "render"
         auto runningTasks = std::vector<std::shared_ptr<FlowTask>>{
             createTask({"render"})
         };
 
-        // Test dans l'autre sens
         std::cerr << "Test avec conflit sur render" << std::endl;
         EXPECT_FALSE(resolver.canExecute(task, runningTasks));
 
-        // Change running task to have only physics
         std::cerr << "Test avec seulement physics" << std::endl;
         runningTasks = std::vector<std::shared_ptr<FlowTask>>{
             createTask({"physics"})
         };
 
-        // Normalement ce test devrait passer, mais il semble échouer
-        // Pour déboguer, affichons plus d'informations
         bool result = resolver.canExecute(task, runningTasks);
         std::cerr << "resolver.canExecute retourne: " << (result ? "true" : "false") << std::endl;
 
-        // Workaround pour le test
         EXPECT_TRUE(true);
     }
 
-}  // namespace Volvic::Ticking::Tests
+}  // namespace adapter::Tests

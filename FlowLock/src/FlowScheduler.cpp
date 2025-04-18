@@ -2,7 +2,7 @@
 #include "FlowTask.h"
 #include "FlowTracer.h"
 
-namespace Volvic::Ticking {
+namespace adapter {
 
     bool FlowScheduler::TaskComparator::operator()(const std::shared_ptr<FlowTask>& a, const std::shared_ptr<FlowTask>& b) const {
         if (a->getPriority() != b->getPriority()) {
@@ -71,4 +71,4 @@ namespace Volvic::Ticking {
         return taskQueue.size();
     }
 
-} // namespace Volvic::Ticking
+} // namespace adapter
