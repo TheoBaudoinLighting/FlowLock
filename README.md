@@ -14,6 +14,8 @@ Provide a lightweight, robust, and high-performance **C++17** library for concur
 
 ## Core Components
 
+![image](https://github.com/user-attachments/assets/822de100-4c8a-4739-afa4-9e6ec1c4a13f)
+
 ### `FlowLock`
 Central singleton that coordinates the entire system. I use it to:
 - Submit tasks via `request(...)`
