@@ -36,7 +36,6 @@
 *.vscode
 
 Build/*
-FlowLock_App/*
 Intermediates/*
 packages/*
 Threadpool/*

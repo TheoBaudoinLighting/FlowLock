@@ -15,6 +15,8 @@ namespace adapter {
     }
 
     void FlowExecution::executeTask(std::shared_ptr<FlowTask> task) {
+        std::cerr << "[DEBUG] FlowExecution::executeTask CALLED\n";
+        
         if (!task) return;
 
         bool taskRegistered = false;

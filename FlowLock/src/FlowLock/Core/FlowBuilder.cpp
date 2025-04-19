@@ -44,29 +44,6 @@ FlowBuilder& FlowBuilder::prioritized() {
     return *this;
 }
 
-template<typename F>
-auto FlowBuilder::run(F&& func) -> std::future<std::invoke_result_t<std::decay_t<F>, FlowContext&>> {
-    auto wrappedFunc = [func = std::forward<F>(func), timeout = this->timeout](FlowContext& ctx) mutable {
-        if (timeout.count() > 0) {
-            ctx.setTimeout(timeout);
-        }
-        return func(ctx);
-    };
-
-    if (hasCustomPolicy && !tags.empty()) {
-        for (const auto& tag : tags) {
-            FlowLockImpl::instance().setPolicy(tag, customPolicy);
-        }
-    }
-
-    return FlowLockImpl::instance().request(std::move(wrappedFunc), priority, tags);
-}
-
-template<typename F>
-auto FlowBuilder::operator<<(F&& func) -> std::future<std::invoke_result_t<std::decay_t<F>, FlowContext&>> {
-    return run(std::forward<F>(func));
-}
-
 ScopedTask::ScopedTask(const std::string& name, uint32_t p)
     : taskName(name), priority(p) {
     tags.push_back("section:" + name);

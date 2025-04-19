@@ -9,7 +9,6 @@ namespace adapter {
 
         allTags.push_back("section:" + name);
 
-        // Optionally log the section creation via the tracer
         FlowTracer::instance().addEvent(
             TraceEvent::Type::TASK_QUEUED,
             "Section started: " + name,
@@ -20,7 +19,6 @@ namespace adapter {
     }
 
     FlowSection::~FlowSection() {
-        // Optionally log the section completion via the tracer
         FlowTracer::instance().addEvent(
             TraceEvent::Type::TASK_COMPLETED,
             "Section ended: " + sectionName,

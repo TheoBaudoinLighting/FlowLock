@@ -9,6 +9,10 @@ bool FlowLock::await(std::chrono::milliseconds timeout) {
     return FlowLockImpl::instance().await(timeout);
 }
 
+bool FlowLock::waitForDrain(std::chrono::milliseconds timeout) {
+    return FlowLockImpl::instance().await(timeout);
+}
+
 void FlowLock::setThreadPoolSize(size_t size) {
     FlowLockImpl::instance().setThreadPoolSize(size);
 }

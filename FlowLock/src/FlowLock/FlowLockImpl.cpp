@@ -22,30 +22,16 @@ FlowLockImpl::FlowLockImpl()
     : scheduler(std::make_unique<FlowScheduler>(FlowScheduler::Strategy::PRIORITY)),
     execution(std::make_unique<FlowExecution>(*scheduler)),
     conflictResolver(std::make_unique<ConflictResolver>()),
-    threadPool(std::make_unique<ThreadPool>()),
+    threadPool(nullptr),
     antiStarvationLimit(10) {
 
-    int numProcessors = std::max(2, static_cast<int>(std::thread::hardware_concurrency() / 2));
-    
-    for (int i = 0; i < numProcessors; i++) {
-        threadPool->enqueue([this, i]() {
-            while (!stopping) {
-                processNextTask();
-                std::this_thread::sleep_for(std::chrono::milliseconds(1));
-            }
-        });
-    }
-    
     execution->setTaskCompletionCallback(
         [this](const std::shared_ptr<FlowTask>& task) {
             onTaskCompleted(task);
         }
     );
     
-    // Anti-starvation setup - utiliser une approche différente sans modifier canExecute
     std::unordered_map<void*, size_t>* reEnqueueCounts = new std::unordered_map<void*, size_t>();
-    
-    // Pas besoin de modifier conflictResolver ici
 }
 
 FlowLockImpl::~FlowLockImpl() {
@@ -101,7 +87,18 @@ void FlowLockImpl::run() {
 }
 
 void FlowLockImpl::setThreadPoolSize(size_t threads) {
-    threadPool->resize(threads);
+    threadPool = std::make_unique<ThreadPool>(threads);
+    
+    for (size_t i = 0; i < threads; ++i) {
+        threadPool->enqueue([this]() {
+            while (!stopping) {
+                this->run(); 
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            }
+        });
+    }
+    
+    std::cerr << "[FlowLock] Thread pool initialized with " << threads << " threads.\n";
 }
 
 void FlowLockImpl::processNextTask() {
@@ -115,7 +112,6 @@ void FlowLockImpl::processNextTask() {
 
     std::vector<std::shared_ptr<FlowTask>> currentRunningTasks = execution->getRunningTasks();
 
-    // Implémenter anti-starvation ici
     static std::unordered_map<void*, size_t> taskReEnqueueCount;
     
     bool canRun = conflictResolver->canExecute(task, currentRunningTasks);
@@ -125,10 +121,8 @@ void FlowLockImpl::processNextTask() {
         count++;
         reEnqueuedTaskCount++;
         
-        // Si réenfilé trop souvent, on force l'exécution
         if (count > antiStarvationLimit) {
             canRun = true;
-            // On pourrait appeler FlowTracer ici
         }
     }
     
@@ -136,7 +130,6 @@ void FlowLockImpl::processNextTask() {
         try {
             execution->executeTask(task);
             
-            // Réinitialiser le compteur
             void* taskPtr = task.get();
             taskReEnqueueCount.erase(taskPtr);
         } catch (...) {
@@ -159,7 +152,6 @@ void FlowLockImpl::onTaskCompleted(const std::shared_ptr<FlowTask>& task) {
         try {
             userCompletionCallback(task);
         } catch (...) {
-            // Log error
         }
     }
 
@@ -168,7 +160,6 @@ void FlowLockImpl::onTaskCompleted(const std::shared_ptr<FlowTask>& task) {
     try {
         processNextTask();
     } catch (...) {
-        // Log error
     }
 
     bool allCompleted = !scheduler->hasTasks() && execution->getRunningTasks().empty();

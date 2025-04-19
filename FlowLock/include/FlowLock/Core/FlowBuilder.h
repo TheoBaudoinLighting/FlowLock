@@ -1,16 +1,13 @@
 #pragma once
 
 #include "FlowLock/Core/ConflictResolver.h"
+#include "FlowLock/Context/FlowContext.h"
+#include "FlowLock/FlowLockImpl.h"
 #include <functional>
 #include <future>
 #include <string>
 #include <vector>
 #include <chrono>
-
-namespace adapter {
-    class FlowContext;
-    class FlowLockImpl;
-}
 
 namespace adapter {
 
@@ -54,4 +51,29 @@ private:
     std::vector<std::string> tags;
 };
 
+
+template<typename F>
+auto FlowBuilder::run(F&& func) -> std::future<std::invoke_result_t<std::decay_t<F>, FlowContext&>> {
+    auto wrappedFunc = [func = std::forward<F>(func), timeout = this->timeout](FlowContext& ctx) mutable {
+        if (timeout.count() > 0) {
+            ctx.setTimeout(timeout);
+        }
+        return func(ctx);
+    };
+
+    if (hasCustomPolicy && !tags.empty()) {
+        for (const auto& tag : tags) {
+            FlowLockImpl::instance().setPolicy(tag, customPolicy);
+        }
+    }
+
+    return FlowLockImpl::instance().request(std::move(wrappedFunc), priority, tags);
+}
+
+template<typename F>
+auto FlowBuilder::operator<<(F&& func) -> std::future<std::invoke_result_t<std::decay_t<F>, FlowContext&>> {
+    return run(std::forward<F>(func));
+}
+
 } // namespace adapter
+

@@ -1,6 +1,11 @@
 #pragma once
 
 #include "FlowLock/Core/ConflictResolver.h"
+#include "FlowLock/Scheduler/FlowTask.h"
+#include "FlowLock/Scheduler/FlowScheduler.h"
+#include "FlowLock/Execution/FlowExecution.h"
+#include "FlowLock/Context/FlowContext.h"
+#include "FlowLock/Utils/ThreadPool.h"
 #include <memory>
 #include <functional>
 #include <future>
@@ -9,14 +14,13 @@
 #include <mutex>
 #include <condition_variable>
 #include <atomic>
+#include <queue>
 
 namespace adapter {
 
-// Forward declarations
 class FlowExecution;
 class FlowScheduler;
 class FlowContext;
-class FlowTask;
 class ThreadPool;
 
 class FlowLockImpl {
@@ -30,7 +34,36 @@ public:
 
     template<typename F>
     auto request(F&& func, uint32_t priority = 0, const std::vector<std::string>& tags = {})
-        -> std::future<std::invoke_result_t<std::decay_t<F>, FlowContext&>>;
+        -> std::future<std::invoke_result_t<std::decay_t<F>, FlowContext&>> {
+        using ReturnType = std::invoke_result_t<std::decay_t<F>, FlowContext&>;
+        auto taskPromise = std::make_shared<std::promise<ReturnType>>();
+        auto future = taskPromise->get_future();
+        
+        auto task = std::make_shared<FlowTask>(
+            [func = std::forward<F>(func), promise = taskPromise](FlowContext& context) mutable {
+                try {
+                    if constexpr (std::is_void_v<ReturnType>) {
+                        func(context);
+                        promise->set_value();
+                    } else {
+                        promise->set_value(func(context));
+                    }
+                } catch (...) {
+                    promise->set_exception(std::current_exception());
+                }
+            },
+            priority
+        );
+        
+        for (const auto& tag : tags) {
+            task->addTag(tag);
+        }
+        
+        scheduler->enqueueTask(task);
+        scheduleCondVar.notify_one();
+        
+        return future;
+    }
 
     bool await(std::chrono::milliseconds timeout = std::chrono::seconds(5));
     void run();
